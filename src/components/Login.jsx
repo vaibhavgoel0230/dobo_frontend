@@ -5,8 +5,11 @@ import { FcGoogle } from 'react-icons/fc';
 import jwt_decode from "jwt-decode";
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
+import { client } from '../client';
 
 const Login = () => {
+    const navigate = useNavigate();
+
     const responseGoogle = (credentialResponse) => {
         const decoded_response = jwt_decode(credentialResponse.credential);
         localStorage.setItem('user', JSON.stringify(decoded_response));
@@ -14,9 +17,13 @@ const Login = () => {
         const doc = {
             _id: sub,
             _type: 'user',
-            userName: given_name,
+            username: given_name,
             image: picture
         }
+
+        client.createIfNotExists(doc).then(() => {
+            navigate('/', { replace: true })
+        })
     };
     return (
         <div className='flex flex-col justify-start items-center h-screen'>
@@ -34,11 +41,12 @@ const Login = () => {
                     <div className='p-5'>
                         <img src={logo} width="130px" alt="logo" />
                     </div>
-                    <div className='shadow-2xl' width="130px">
+                    <div className='shadow-2xl'>
                         <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
                             <GoogleLogin
                                 onSuccess={responseGoogle}
                                 onError={responseGoogle}
+                                useOneTap
                             />
                         </GoogleOAuthProvider>
                     </div>
