@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import jwt_decode from "jwt-decode";
@@ -42,13 +42,11 @@ const Login = () => {
                         <img src={logo} width="130px" alt="logo" />
                     </div>
                     <div className='shadow-2xl'>
-                        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
-                            <GoogleLogin
-                                onSuccess={responseGoogle}
-                                onError={responseGoogle}
-                                useOneTap
-                            />
-                        </GoogleOAuthProvider>
+                        <GoogleLogin
+                            onSuccess={responseGoogle}
+                            onError={responseGoogle}
+                            useOneTap
+                        />
                     </div>
                 </div>
             </div>
